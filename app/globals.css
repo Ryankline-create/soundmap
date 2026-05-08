@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 39% 9%;
+    --foreground: 210 20% 98%;
+
+    --card: 222 36% 12%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 222 36% 12%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 250 96% 67%;
+    --primary-foreground: 210 20% 98%;
+
+    --secondary: 222 28% 18%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 222 28% 16%;
+    --muted-foreground: 215 16% 65%;
+
+    --accent: 250 96% 67%;
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 222 22% 22%;
+    --input: 222 28% 18%;
+    --ring: 250 96% 67%;
+
+    --radius: 1rem;
+
+    --brand-coral: 4 100% 71%;
+    --brand-pink: 333 80% 61%;
+    --brand-purple: 250 96% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    background-image: linear-gradient(
+      120deg,
+      hsl(var(--brand-coral)) 0%,
+      hsl(var(--brand-pink)) 45%,
+      hsl(var(--brand-purple)) 100%
+    );
+  }
+  .text-brand-gradient {
+    background-image: linear-gradient(
+      120deg,
+      hsl(var(--brand-coral)) 0%,
+      hsl(var(--brand-pink)) 45%,
+      hsl(var(--brand-purple)) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .ring-brand {
+    box-shadow:
+      0 0 0 1px hsl(var(--brand-pink) / 0.35),
+      0 20px 60px -10px hsl(var(--brand-purple) / 0.45);
+  }
+  .glow-brand {
+    box-shadow:
+      0 0 80px -10px hsl(var(--brand-pink) / 0.55),
+      0 0 140px -20px hsl(var(--brand-purple) / 0.5);
+  }
+}
