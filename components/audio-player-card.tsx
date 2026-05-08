@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play, Volume2 } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { InstrumentIcon, instrumentLabel } from "@/components/instrument-icon";
 import { cn } from "@/lib/utils";
@@ -88,68 +87,56 @@ export function AudioPlayerCard({ preset, hint, roundLabel, plays, onPlay, locke
   const allUsed = plays >= MAX_PLAYS;
 
   return (
-    <Card className={cn("relative overflow-hidden p-5", className)}>
-      <div className="flex items-center justify-between">
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-          {roundLabel}
-        </span>
-        <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Volume2 className="h-3.5 w-3.5" />
-          0:30 clip
-        </span>
+    <Card className={cn("p-6", className)}>
+      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+        <span>{roundLabel}</span>
+        <span>0:30 clip</span>
       </div>
 
-      <div className="mt-4 flex gap-3">
-        <div
-          className={cn(
-            "flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-brand-purple",
-            isPlaying && "animate-pulse-soft"
-          )}
-        >
-          <InstrumentIcon instrument={preset.instrument} className="h-7 w-7" />
+      <div className="mt-4 flex items-start gap-4">
+        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center text-foreground">
+          <InstrumentIcon instrument={preset.instrument} className="h-9 w-9" />
         </div>
-        <div className="flex flex-1 flex-col justify-center">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-purple/90">
+        <div className="min-w-0 flex-1">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             {instrumentLabel(preset.instrument)} · {preset.bpm} BPM
           </p>
-          <p className="mt-1 text-balance text-[15px] leading-snug text-foreground/90">
-            <span className="mr-1 text-brand-coral">“</span>
-            {hint}
-            <span className="ml-1 text-brand-coral">”</span>
+          <p className="mt-1 font-serif-display text-[22px] italic leading-snug text-foreground">
+            “{hint}”
           </p>
         </div>
       </div>
 
-      <div className="mt-5 flex items-center gap-4">
-        <Button
+      <div className="mt-6 flex items-center gap-4">
+        <button
           type="button"
           onClick={togglePlay}
           disabled={locked || allUsed}
           aria-label={isPlaying ? "Stop" : "Play clip"}
-          size="icon"
           className={cn(
-            "h-14 w-14 rounded-full text-white",
-            isPlaying && "animate-pulse-soft"
+            "flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border transition-colors",
+            "border-foreground bg-foreground text-background hover:bg-foreground/90",
+            (locked || allUsed) && "border-border bg-muted text-muted-foreground hover:bg-muted"
           )}
         >
           {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 translate-x-[1px]" />}
-        </Button>
+        </button>
 
         <div className="flex-1">
-          <div className="relative h-2 overflow-hidden rounded-full bg-white/5">
+          <div className="relative h-px w-full bg-border">
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-brand-gradient transition-[width] duration-100 ease-linear"
+              className="absolute inset-y-[-1px] left-0 h-[3px] -translate-y-[1px] bg-foreground transition-[width] duration-100 ease-linear"
               style={{ width: `${pct}%` }}
             />
           </div>
-          <div className="mt-1.5 flex justify-between text-[11px] text-muted-foreground">
-            <span>{fmtTime(elapsed)}</span>
+          <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
+            <span className="font-serif-display italic text-foreground">{fmtTime(elapsed)}</span>
             <span>0:30</span>
           </div>
         </div>
       </div>
 
-      <p className="mt-3 text-[11px] text-muted-foreground">
+      <p className="mt-4 text-[11px] text-muted-foreground">
         {allUsed
           ? "All 3 plays used — make your guess."
           : nextIsFree

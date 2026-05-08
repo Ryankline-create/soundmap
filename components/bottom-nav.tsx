@@ -23,7 +23,7 @@ type Tab = {
 
 const TABS: Tab[] = [
   { href: "/play",      label: "Play",      Icon: Globe2 },
-  { href: "/deep-dive", label: "Deep Dive", Icon: Headphones },
+  { href: "/deep-dive", label: "Dive",      Icon: Headphones },
   { href: "/trivia",    label: "Trivia",    Icon: Sparkles },
   { href: "/lessons",   label: "Lessons",   Icon: BookOpen },
   { href: "/trending",  label: "Trending",  Icon: Flame },
@@ -37,9 +37,9 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Primary"
-      className="sticky bottom-0 z-40 border-t border-white/5 bg-background/85 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur"
+      className="sticky bottom-0 z-40 border-t border-border bg-background/90 px-1.5 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5 backdrop-blur"
     >
-      <ul className="flex items-stretch justify-between gap-0.5">
+      <ul className="flex items-stretch justify-between">
         {TABS.map(({ href, label, Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
@@ -48,21 +48,33 @@ export function BottomNav() {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex flex-col items-center gap-1 rounded-xl px-1 py-1.5 text-[10px] font-medium transition-colors",
-                  active
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                  "group flex flex-col items-center gap-1 px-1 py-1.5 text-[10px] font-medium transition-colors",
+                  active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 )}
               >
+                <span className="relative flex h-6 w-6 items-center justify-center">
+                  <Icon
+                    className={cn(
+                      "h-[18px] w-[18px]",
+                      active ? "text-foreground" : "text-muted-foreground/85"
+                    )}
+                    strokeWidth={active ? 2 : 1.6}
+                  />
+                  {active && (
+                    <span
+                      aria-hidden
+                      className="absolute -bottom-1.5 h-1 w-1 rounded-full bg-primary"
+                    />
+                  )}
+                </span>
                 <span
                   className={cn(
-                    "flex h-8 w-12 items-center justify-center rounded-full transition-all",
-                    active ? "bg-brand-gradient text-white shadow-md shadow-brand-purple/30" : "bg-transparent"
+                    "leading-none tracking-tight",
+                    active ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  {label}
                 </span>
-                <span className="leading-none">{label}</span>
               </Link>
             </li>
           );

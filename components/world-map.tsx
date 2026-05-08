@@ -51,8 +51,6 @@ const MUSIC_CITIES: { name: string; lng: number; lat: number; anchor?: "start" |
   { name: "Sydney",      lng: 151.2,  lat: -33.9, anchor: "end",    dy:  4,   dx: -2.5 },
 ];
 
-// Continent silhouettes — stylized blobs in equirectangular space (viewBox 360 x 180).
-// Drafted by hand, recognizable but not survey-grade.
 const NORTH_AMERICA =
   "M 64 65 Q 50 56 50 42 Q 38 36 22 38 Q 18 26 26 22 Q 38 16 52 16 Q 70 14 90 14 Q 108 14 122 26 Q 124 35 116 42 Q 109 53 105 62 Q 102 70 96 72 Q 88 73 84 70 Q 78 75 70 73 Q 65 70 64 65 Z";
 const GREENLAND =
@@ -83,25 +81,24 @@ const NEW_ZEALAND =
   "M 350 130 Q 354 128 354 134 Q 354 140 350 140 Q 348 138 348 134 Q 348 130 350 130 Z M 352 142 Q 356 142 356 146 Q 354 148 352 146 Q 350 144 352 142 Z";
 
 const CONTINENT_LABELS: { text: string; x: number; y: number; size?: number; letterSpacing?: number }[] = [
-  { text: "NORTH AMERICA", x: 73, y: 43, size: 5, letterSpacing: 1.2 },
-  { text: "SOUTH AMERICA", x: 122, y: 116, size: 4.6, letterSpacing: 1.1 },
-  { text: "EUROPE",        x: 195, y: 36, size: 4.6, letterSpacing: 1.1 },
-  { text: "AFRICA",        x: 197, y: 92, size: 5.2, letterSpacing: 1.4 },
-  { text: "RUSSIA",        x: 270, y: 28, size: 5,   letterSpacing: 1.3 },
-  { text: "CENTRAL ASIA",  x: 264, y: 46, size: 4.4, letterSpacing: 1.0 },
-  { text: "MIDDLE EAST",   x: 224, y: 64, size: 4.0, letterSpacing: 0.9 },
-  { text: "SOUTH ASIA",    x: 252, y: 76, size: 3.9, letterSpacing: 0.9 },
-  { text: "EAST ASIA",     x: 296, y: 56, size: 4.4, letterSpacing: 1.0 },
-  { text: "SE ASIA",       x: 286, y: 90, size: 3.6, letterSpacing: 0.8 },
-  { text: "AUSTRALIA",     x: 314, y: 121, size: 4.6, letterSpacing: 1.1 },
+  { text: "NORTH AMERICA", x: 73, y: 43, size: 4.6, letterSpacing: 1.2 },
+  { text: "SOUTH AMERICA", x: 122, y: 116, size: 4.2, letterSpacing: 1.1 },
+  { text: "EUROPE",        x: 195, y: 36, size: 4.2, letterSpacing: 1.1 },
+  { text: "AFRICA",        x: 197, y: 92, size: 5.0, letterSpacing: 1.4 },
+  { text: "RUSSIA",        x: 270, y: 28, size: 4.6, letterSpacing: 1.3 },
+  { text: "CENTRAL ASIA",  x: 264, y: 46, size: 4.0, letterSpacing: 1.0 },
+  { text: "MIDDLE EAST",   x: 224, y: 64, size: 3.6, letterSpacing: 0.9 },
+  { text: "SOUTH ASIA",    x: 252, y: 76, size: 3.6, letterSpacing: 0.9 },
+  { text: "EAST ASIA",     x: 296, y: 56, size: 4.0, letterSpacing: 1.0 },
+  { text: "SE ASIA",       x: 286, y: 90, size: 3.4, letterSpacing: 0.8 },
+  { text: "AUSTRALIA",     x: 314, y: 121, size: 4.2, letterSpacing: 1.1 },
 ];
 
-const OCEAN_LABELS: { text: string; x: number; y: number; size?: number; italic?: boolean }[] = [
-  { text: "PACIFIC OCEAN",  x: 22,  y: 100, size: 4 },
-  { text: "ATLANTIC OCEAN", x: 148, y: 76,  size: 3.8 },
-  { text: "SOUTH ATLANTIC", x: 150, y: 132, size: 3.4 },
-  { text: "INDIAN OCEAN",   x: 252, y: 118, size: 3.8 },
-  { text: "PACIFIC OCEAN",  x: 340, y: 100, size: 4 },
+const OCEAN_LABELS: { text: string; x: number; y: number; size?: number }[] = [
+  { text: "Pacific",   x: 22,  y: 102, size: 4.6 },
+  { text: "Atlantic",  x: 148, y: 80,  size: 4.2 },
+  { text: "Indian",    x: 254, y: 116, size: 4.2 },
+  { text: "Pacific",   x: 340, y: 102, size: 4.6 },
 ];
 
 export function WorldMap({ pin, target, selectedRegion, onPick, disabled, className }: Props) {
@@ -121,9 +118,6 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
 
   const regionGlow = !pin && selectedRegion ? REGION_CENTER[selectedRegion] : null;
 
-  const continentFill = "url(#landFill)";
-  const continentStroke = "hsl(var(--brand-purple))";
-
   return (
     <svg
       ref={svgRef}
@@ -132,35 +126,25 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
       role="img"
       aria-label="World map. Tap to place a pin."
       className={cn(
-        "h-auto w-full select-none rounded-2xl bg-[#070C1C] ring-1 ring-white/10",
+        "h-auto w-full select-none rounded-xl border border-border bg-[#E8F4F2]",
         !disabled && "cursor-crosshair",
         className
       )}
     >
       <defs>
-        <radialGradient id="ocean" cx="50%" cy="55%" r="80%">
-          <stop offset="0%"   stopColor="#152144" />
-          <stop offset="100%" stopColor="#050917" />
-        </radialGradient>
         <linearGradient id="landFill" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%"   stopColor="hsl(220 28% 32%)" />
-          <stop offset="100%" stopColor="hsl(232 32% 18%)" />
+          <stop offset="0%" stopColor="#C8DEDB" />
+          <stop offset="100%" stopColor="#9DC2BD" />
         </linearGradient>
         <radialGradient id="regionGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="hsl(var(--brand-purple))" stopOpacity="0.55" />
-          <stop offset="55%"  stopColor="hsl(var(--brand-purple))" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="hsl(var(--brand-purple))" stopOpacity="0" />
+          <stop offset="0%"   stopColor="hsl(var(--teal))" stopOpacity="0.42" />
+          <stop offset="55%"  stopColor="hsl(var(--teal))" stopOpacity="0.14" />
+          <stop offset="100%" stopColor="hsl(var(--teal))" stopOpacity="0" />
         </radialGradient>
-        <filter id="landGlow" x="-10%" y="-10%" width="120%" height="120%">
-          <feGaussianBlur stdDeviation="0.4" result="b" />
-          <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-        </filter>
       </defs>
 
-      <rect x="0" y="0" width={VW} height={VH} fill="url(#ocean)" />
-
       {/* Graticule */}
-      <g stroke="#ffffff" strokeOpacity="0.05" strokeWidth="0.4">
+      <g stroke="hsl(var(--navy))" strokeOpacity="0.06" strokeWidth="0.35">
         {[-60, -30, 30, 60].map((lat) => (
           <line key={`lat${lat}`} x1="0" y1={latToY(lat)} x2={VW} y2={latToY(lat)} />
         ))}
@@ -170,18 +154,18 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
       </g>
 
       {/* Equator */}
-      <line x1="2" y1={VH / 2} x2={VW - 2} y2={VH / 2} stroke="hsl(var(--brand-purple))" strokeOpacity="0.35" strokeDasharray="3 3" strokeWidth="0.5" />
-      <text x="4" y={VH / 2 - 1.2} fontSize="3.6" fill="hsl(var(--brand-purple))" fillOpacity="0.7" letterSpacing={0.6}>EQUATOR</text>
+      <line x1="2" y1={VH / 2} x2={VW - 2} y2={VH / 2} stroke="hsl(var(--navy))" strokeOpacity="0.25" strokeDasharray="2 3" strokeWidth="0.4" />
+      <text x="4" y={VH / 2 - 1.3} fontSize="3.2" fill="hsl(var(--navy))" fillOpacity="0.45" letterSpacing={0.6}>EQUATOR</text>
 
-      {/* Ocean labels */}
-      <g fill="hsl(220 30% 70%)" fillOpacity="0.32" fontSize="3.8" fontStyle="italic" letterSpacing={0.4} textAnchor="middle">
+      {/* Ocean labels — italic serif, low opacity */}
+      <g fill="hsl(var(--navy))" fillOpacity="0.32" fontSize="4.2" fontStyle="italic" letterSpacing={0.5} textAnchor="middle" fontFamily="var(--font-display), serif">
         {OCEAN_LABELS.map((o, i) => (
           <text key={i} x={o.x} y={o.y} fontSize={o.size}>{o.text}</text>
         ))}
       </g>
 
       {/* Continents */}
-      <g fill={continentFill} stroke={continentStroke} strokeOpacity="0.22" strokeWidth="0.45" filter="url(#landGlow)">
+      <g fill="url(#landFill)" stroke="hsl(var(--navy))" strokeOpacity="0.18" strokeWidth="0.4">
         <path d={NORTH_AMERICA} />
         <path d={GREENLAND} />
         <path d={SOUTH_AMERICA} />
@@ -198,14 +182,14 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
         <path d={NEW_ZEALAND} />
       </g>
 
-      {/* Continent labels */}
-      <g fill="white" fillOpacity="0.22" fontWeight={600} textAnchor="middle" style={{ pointerEvents: "none" }}>
+      {/* Continent labels — small caps tracked */}
+      <g fill="hsl(var(--navy))" fillOpacity="0.42" fontWeight={600} textAnchor="middle" style={{ pointerEvents: "none" }} fontFamily="var(--font-sans), sans-serif">
         {CONTINENT_LABELS.map((l, i) => (
           <text
             key={i}
             x={l.x}
             y={l.y}
-            fontSize={l.size ?? 4.5}
+            fontSize={l.size ?? 4.2}
             letterSpacing={l.letterSpacing ?? 1}
           >
             {l.text}
@@ -227,22 +211,23 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
           const y = latToY(c.lat);
           return (
             <g key={c.name}>
-              <circle cx={x} cy={y} r="3.6" fill="hsl(var(--brand-purple))" fillOpacity="0.16">
-                <animate attributeName="r" values="3;5.6;3" dur="3.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.55;0.05;0.55" dur="3.4s" repeatCount="indefinite" />
+              <circle cx={x} cy={y} r="3.4" fill="hsl(var(--teal))" fillOpacity="0.16">
+                <animate attributeName="r" values="2.8;5.2;2.8" dur="3.4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.5;0.05;0.5" dur="3.4s" repeatCount="indefinite" />
               </circle>
-              <circle cx={x} cy={y} r="1.4" fill="hsl(var(--brand-purple))" stroke="white" strokeOpacity="0.85" strokeWidth="0.4" />
+              <circle cx={x} cy={y} r="1.3" fill="hsl(var(--teal))" stroke="white" strokeOpacity="0.95" strokeWidth="0.45" />
               <text
                 x={x + (c.dx ?? 0)}
                 y={y + (c.dy ?? 4)}
-                fontSize="3.8"
-                fontWeight={600}
+                fontSize="3.6"
+                fontWeight={500}
                 textAnchor={c.anchor ?? "middle"}
-                fill="hsl(220 25% 88%)"
-                fillOpacity="0.85"
+                fill="hsl(var(--navy))"
+                fillOpacity="0.8"
                 style={{ paintOrder: "stroke", letterSpacing: 0.2 }}
-                stroke="#070C1C"
+                stroke="#E8F4F2"
                 strokeWidth="0.9"
+                fontFamily="var(--font-sans), sans-serif"
               >
                 {c.name}
               </text>
@@ -258,9 +243,9 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
           y1={latToY(pin.lat)}
           x2={lngToX(target.lng)}
           y2={latToY(target.lat)}
-          stroke="hsl(var(--brand-coral))"
-          strokeOpacity="0.9"
-          strokeWidth="1.0"
+          stroke="hsl(var(--navy))"
+          strokeOpacity="0.95"
+          strokeWidth="0.9"
           strokeDasharray="3 2"
         >
           <animate attributeName="stroke-dashoffset" from="0" to="-10" dur="1.4s" repeatCount="indefinite" />
@@ -270,18 +255,18 @@ export function WorldMap({ pin, target, selectedRegion, onPick, disabled, classN
       {/* User pin */}
       {pin && (
         <g transform={`translate(${lngToX(pin.lng)} ${latToY(pin.lat)})`}>
-          <circle r="6.5" fill="hsl(var(--brand-coral))" fillOpacity="0.22" />
-          <circle r="2.8" fill="hsl(var(--brand-coral))" stroke="white" strokeWidth="0.7" />
+          <circle r="6" fill="hsl(var(--navy))" fillOpacity="0.22" />
+          <circle r="2.6" fill="hsl(var(--navy))" stroke="white" strokeWidth="0.7" />
         </g>
       )}
 
       {/* Target pin */}
       {target && (
         <g transform={`translate(${lngToX(target.lng)} ${latToY(target.lat)})`}>
-          <circle r="9" fill="hsl(var(--brand-purple))" fillOpacity="0.25">
+          <circle r="9" fill="hsl(var(--teal))" fillOpacity="0.25">
             <animate attributeName="r" values="6;11;6" dur="2s" repeatCount="indefinite" />
           </circle>
-          <circle r="3.4" fill="hsl(var(--brand-purple))" stroke="white" strokeWidth="0.8" />
+          <circle r="3.2" fill="hsl(var(--teal))" stroke="white" strokeWidth="0.8" />
         </g>
       )}
     </svg>

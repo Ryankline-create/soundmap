@@ -1,7 +1,5 @@
 "use client";
 
-import { Check } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { REGIONS, type RegionId } from "@/lib/regions";
 
@@ -14,7 +12,7 @@ type Props = {
 
 export function RegionGrid({ value, onChange, disabled, highlight }: Props) {
   return (
-    <ul className="grid grid-cols-3 gap-2">
+    <ul className="grid grid-cols-3 gap-1.5">
       {REGIONS.map((r) => {
         const selected = value === r.id;
         const isCorrect = highlight?.correct === r.id;
@@ -27,21 +25,23 @@ export function RegionGrid({ value, onChange, disabled, highlight }: Props) {
               disabled={disabled}
               aria-pressed={selected}
               className={cn(
-                "group relative flex h-[78px] w-full flex-col items-center justify-center gap-1 rounded-2xl border bg-white/5 px-1 text-center transition-all",
-                "border-white/10 text-foreground/90 hover:border-white/20 hover:bg-white/10",
-                selected && "border-transparent bg-brand-gradient text-white shadow-md shadow-brand-purple/40",
-                isCorrect && "ring-2 ring-emerald-400/80 ring-offset-2 ring-offset-background",
-                isWrong && "ring-2 ring-rose-500/70 ring-offset-2 ring-offset-background",
-                disabled && "cursor-default opacity-90"
+                "group flex h-[78px] w-full flex-col items-center justify-center gap-1.5 rounded-xl border bg-card text-center transition-colors",
+                "border-border text-foreground hover:border-foreground/30",
+                selected && "border-foreground bg-foreground text-background",
+                isCorrect && !selected && "border-emerald-500/70 bg-emerald-50",
+                isWrong && !selected && "border-rose-400/70 bg-rose-50",
+                disabled && "cursor-default"
               )}
             >
               <span className="text-2xl leading-none">{r.emoji}</span>
-              <span className="text-[11px] font-medium leading-tight">
+              <span
+                className={cn(
+                  "px-1 text-[11px] font-medium leading-tight",
+                  selected ? "text-background" : "text-foreground/85"
+                )}
+              >
                 {r.label}
               </span>
-              {selected && (
-                <Check className="absolute right-1.5 top-1.5 h-3.5 w-3.5 text-white" />
-              )}
             </button>
           </li>
         );

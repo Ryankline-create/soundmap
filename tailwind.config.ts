@@ -48,10 +48,15 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          coral: "hsl(var(--brand-coral))",
-          pink: "hsl(var(--brand-pink))",
-          purple: "hsl(var(--brand-purple))",
+          navy: "hsl(var(--navy))",
+          navyDeep: "hsl(var(--navy-deep))",
+          navyMid: "hsl(var(--navy-mid))",
+          teal: "hsl(var(--teal))",
+          tealSoft: "hsl(var(--teal-soft))",
+          tealTint: "hsl(var(--teal-tint))",
         },
+        navy: "hsl(var(--navy))",
+        teal: "hsl(var(--teal))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -60,7 +65,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
+        display: ["var(--font-display)", "iowan old style", "palatino linotype", "ui-serif", "serif"],
       },
       keyframes: {
         "fade-up": {

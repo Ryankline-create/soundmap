@@ -1,15 +1,13 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { Globe2, MapPin, Target } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { AudioPlayerCard } from "@/components/audio-player-card";
 import { RegionGrid } from "@/components/region-grid";
 import { WorldMap } from "@/components/world-map";
 import { ResultCard } from "@/components/result-card";
-import { cn } from "@/lib/utils";
 import { ROUNDS } from "@/lib/rounds";
 import { REGION_BY_ID, type RegionId } from "@/lib/regions";
 import { haversineKm, scoreRound, type ScoreBreakdown } from "@/lib/scoring";
@@ -25,7 +23,6 @@ export default function PlayPage() {
   const topRef = useRef<HTMLDivElement>(null);
 
   const round = ROUNDS[roundIndex % ROUNDS.length];
-
   const canSubmit = !!selectedRegion && !!pin && !result;
 
   function onPlay() {
@@ -75,17 +72,15 @@ export default function PlayPage() {
   );
 
   return (
-    <main className="space-y-4 px-4 pb-6 pt-2">
+    <main className="space-y-7 px-5 pb-8 pt-5">
       <div ref={topRef} aria-hidden />
 
-      <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
-          <Globe2 className="h-4 w-4 text-brand-purple" />
-          <h1 className="font-display text-base font-semibold tracking-tight">
-            Round {roundIndex + 1} <span className="text-muted-foreground">of {ROUNDS.length}</span>
-          </h1>
-        </div>
-        <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+      <div className="flex items-baseline justify-between border-b border-border pb-4">
+        <h1 className="font-serif-display text-[28px] italic leading-none tracking-tight">
+          Round <span className="not-italic font-sans tabular-nums">{roundIndex + 1}</span>
+          <span className="text-muted-foreground/60"> / {ROUNDS.length}</span>
+        </h1>
+        <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
           Find this song&apos;s home
         </p>
       </div>
@@ -93,7 +88,7 @@ export default function PlayPage() {
       <AudioPlayerCard
         preset={round.audio}
         hint={round.hint}
-        roundLabel={`Listen carefully`}
+        roundLabel="Listen carefully"
         plays={plays}
         onPlay={onPlay}
         locked={!!result}
@@ -103,96 +98,86 @@ export default function PlayPage() {
         <ResultCard result={result} breakdown={breakdown} onNext={nextRound} />
       ) : (
         <>
-          <Section
-            stepNumber={1}
-            title="Choose a region"
-            subtitle="Where in the world is this music from?"
-          >
+          <Step number="01" title="Choose a region">
+            <p className="mb-3 text-[13px] text-muted-foreground">
+              Where in the world is this music from?
+            </p>
             <RegionGrid
               value={selectedRegion}
               onChange={setSelectedRegion}
               disabled={!!result}
               highlight={null}
             />
-          </Section>
+          </Step>
 
-          <Section
-            stepNumber={2}
-            title="Pin it on the map"
-            subtitle={
-              pin
+          <Step number="02" title="Pin it on the map">
+            <p className="mb-3 text-[13px] text-muted-foreground">
+              {pin
                 ? "Tap again to move your pin."
                 : selectedRegion
                 ? `Glowing area = ${REGION_BY_ID[selectedRegion].label}. Tap your best guess.`
-                : "Pick a region above, then tap the map."
-            }
-          >
+                : "Pick a region first, then tap the map."}
+            </p>
             <WorldMap pin={pin} target={target} selectedRegion={selectedRegion} onPick={setPin} />
-            <div className="mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-purple" />
+            <div className="mt-3 flex items-center justify-between text-[11px] text-muted-foreground">
+              <span className="flex items-center gap-1.5">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-teal" />
                 Music capitals
               </span>
               {pin ? (
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="h-3 w-3 text-brand-coral" />
+                  <MapPin className="h-3 w-3 text-navy" />
                   {pin.lat.toFixed(1)}°, {pin.lng.toFixed(1)}°
                 </span>
               ) : (
                 <span>Tap anywhere · click again to move</span>
               )}
             </div>
-          </Section>
+          </Step>
 
           <Button
             onClick={onSubmit}
+            variant="primary"
             disabled={!canSubmit}
-            size="lg"
-            className="h-14 w-full text-base"
+            className="h-13 w-full rounded-xl py-4 text-base"
           >
-            <Target className="h-5 w-5" />
             Submit guess
           </Button>
         </>
       )}
 
       {result && (
-        <Section stepNumber={null} title="Reveal" subtitle="Your guess vs. the answer">
+        <Step number="—" title="Reveal">
           <WorldMap pin={pin} target={target} onPick={() => undefined} disabled />
-          <p className="mt-2 text-center text-[11px] text-muted-foreground">
-            <span className="text-brand-coral">●</span> your pin · <span className="text-brand-purple">●</span> answer
+          <p className="mt-3 text-center text-[11px] text-muted-foreground">
+            <span className="text-navy">●</span> your pin · <span className="text-teal">●</span> answer
           </p>
-        </Section>
+        </Step>
       )}
     </main>
   );
 }
 
-function Section({
-  stepNumber,
+function Step({
+  number,
   title,
-  subtitle,
   children,
 }: {
-  stepNumber: number | null;
+  number: string;
   title: string;
-  subtitle?: string;
   children: React.ReactNode;
 }) {
   return (
-    <Card className="p-4">
-      <div className="mb-3 flex items-center gap-2.5">
-        {stepNumber != null && (
-          <span className={cn("flex h-7 w-7 items-center justify-center rounded-full bg-brand-gradient text-sm font-bold text-white")}>
-            {stepNumber}
-          </span>
-        )}
-        <div>
-          <h3 className="text-sm font-semibold leading-tight">{title}</h3>
-          {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
-        </div>
+    <section>
+      <div className="mb-4 flex items-baseline gap-3 border-b border-border pb-2">
+        <span className="font-serif-display text-2xl italic leading-none text-foreground/60">
+          {number}
+        </span>
+        <h2 className="text-[13px] font-semibold uppercase tracking-[0.16em] text-foreground">
+          {title}
+        </h2>
       </div>
       {children}
-    </Card>
+    </section>
   );
 }

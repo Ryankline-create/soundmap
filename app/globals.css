@@ -4,39 +4,46 @@
 
 @layer base {
   :root {
-    --background: 222 39% 9%;
-    --foreground: 210 20% 98%;
+    /* Navy + Teal editorial palette */
+    --background: 180 14% 97%;          /* #F7FAFA off-white, cool */
+    --foreground: 207 20% 28%;          /* #3A4A57 slate */
 
-    --card: 222 36% 12%;
-    --card-foreground: 210 20% 98%;
+    --card: 0 0% 100%;                  /* pure white */
+    --card-foreground: 203 57% 20%;     /* navy 700 */
 
-    --popover: 222 36% 12%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 203 57% 20%;
 
-    --primary: 250 96% 67%;
-    --primary-foreground: 210 20% 98%;
+    --primary: 203 57% 20%;             /* #163A50 navy 700 — primary ink */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 222 28% 18%;
-    --secondary-foreground: 210 20% 98%;
+    --secondary: 170 25% 93%;           /* #E8F4F2 teal 100 */
+    --secondary-foreground: 203 57% 20%;
 
-    --muted: 222 28% 16%;
-    --muted-foreground: 215 16% 65%;
+    --muted: 170 25% 95%;
+    --muted-foreground: 207 14% 42%;
 
-    --accent: 250 96% 67%;
-    --accent-foreground: 210 20% 98%;
+    --accent: 174 32% 54%;              /* #5FB3AB teal 500 */
+    --accent-foreground: 203 57% 20%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive: 358 65% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 222 22% 22%;
-    --input: 222 28% 18%;
-    --ring: 250 96% 67%;
+    --border: 180 14% 88%;
+    --input: 180 14% 88%;
+    --ring: 174 32% 54%;
 
-    --radius: 1rem;
+    --radius: 0.85rem;
 
-    --brand-coral: 4 100% 71%;
-    --brand-pink: 333 80% 61%;
-    --brand-purple: 250 96% 67%;
+    /* Brand scale */
+    --navy-deep: 204 60% 14%;           /* #0E2838 navy 900 */
+    --navy: 203 57% 20%;                /* #163A50 navy 700 */
+    --navy-mid: 202 46% 32%;            /* #2C5C77 navy 500 */
+    --teal: 174 32% 54%;                /* #5FB3AB teal 500 */
+    --teal-soft: 172 35% 72%;           /* #9DD3CC teal 300 */
+    --teal-tint: 170 25% 93%;           /* #E8F4F2 teal 100 */
+    --paper: 180 14% 97%;
+    --slate: 207 20% 28%;
   }
 }
 
@@ -48,37 +55,30 @@
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: hsl(var(--teal) / 0.28);
+    color: hsl(var(--navy));
   }
 }
 
 @layer utilities {
-  .bg-brand-gradient {
-    background-image: linear-gradient(
-      120deg,
-      hsl(var(--brand-coral)) 0%,
-      hsl(var(--brand-pink)) 45%,
-      hsl(var(--brand-purple)) 100%
-    );
+  .font-serif-display {
+    font-family: var(--font-display), "iowan old style", "palatino linotype", palatino, ui-serif, serif;
+    font-feature-settings: "liga", "calt";
+    letter-spacing: -0.015em;
   }
-  .text-brand-gradient {
-    background-image: linear-gradient(
-      120deg,
-      hsl(var(--brand-coral)) 0%,
-      hsl(var(--brand-pink)) 45%,
-      hsl(var(--brand-purple)) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .text-navy {
+    color: hsl(var(--navy));
   }
-  .ring-brand {
-    box-shadow:
-      0 0 0 1px hsl(var(--brand-pink) / 0.35),
-      0 20px 60px -10px hsl(var(--brand-purple) / 0.45);
+  .text-teal {
+    color: hsl(var(--teal));
   }
-  .glow-brand {
-    box-shadow:
-      0 0 80px -10px hsl(var(--brand-pink) / 0.55),
-      0 0 140px -20px hsl(var(--brand-purple) / 0.5);
+  .bg-navy {
+    background-color: hsl(var(--navy));
+  }
+  .bg-teal {
+    background-color: hsl(var(--teal));
   }
 }

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { DeepDiveCard } from "@/components/deep-dive-card";
 import { ROUNDS } from "@/lib/rounds";
 import { loadState, type RoundResult } from "@/lib/storage";
@@ -66,7 +65,7 @@ export default function DeepDivePage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   return (
-    <main className="space-y-3 px-4 pb-6 pt-2">
+    <main className="space-y-5 px-5 pb-8 pt-5">
       <Button asChild variant="ghost" size="sm" className="-ml-2 self-start text-muted-foreground">
         <Link href="/deep-dive">
           <ArrowLeft className="h-4 w-4" />
@@ -75,12 +74,12 @@ export default function DeepDivePage({ params }: { params: { id: string } }) {
       </Button>
 
       {error ? (
-        <Card className="p-6 text-center">
-          <p className="text-sm text-rose-300">{error}</p>
-          <Button asChild variant="outline" size="sm" className="mt-4">
+        <div className="space-y-3 border-y border-border py-10 text-center">
+          <p className="font-serif-display text-xl italic text-foreground/85">{error}</p>
+          <Button asChild variant="outline" className="rounded-xl">
             <Link href="/play">Try a round</Link>
           </Button>
-        </Card>
+        </div>
       ) : !meta || !resp ? (
         <LoadingSkeleton />
       ) : (
@@ -92,26 +91,25 @@ export default function DeepDivePage({ params }: { params: { id: string } }) {
 
 function LoadingSkeleton() {
   return (
-    <div className="space-y-3">
-      <Card className="overflow-hidden">
-        <div className="flex items-center gap-3 bg-brand-gradient p-5 text-white">
-          <Loader2 className="h-5 w-5 animate-spin" />
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-white/85">
-              Generating Deep Dive
-            </p>
-            <p className="mt-1 text-sm text-white/85">
-              Pulling instruments, history, and what to listen for…
-            </p>
-          </div>
+    <div className="space-y-7">
+      <div className="space-y-3 border-b border-border pb-6">
+        <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <span>Generating Deep Dive</span>
+          <span>Claude</span>
         </div>
-      </Card>
+        <div className="h-9 w-3/4 animate-pulse rounded bg-muted" />
+        <div className="h-3 w-1/3 animate-pulse rounded bg-muted" />
+      </div>
       {[0, 1, 2].map((i) => (
-        <Card key={i} className="space-y-2 p-4">
-          <div className="h-3 w-1/3 animate-pulse rounded bg-white/10" />
-          <div className="h-3 w-full animate-pulse rounded bg-white/10" />
-          <div className="h-3 w-5/6 animate-pulse rounded bg-white/10" />
-        </Card>
+        <div key={i} className="space-y-2.5">
+          <div className="flex items-center gap-3 border-b border-border pb-2">
+            <div className="h-4 w-6 animate-pulse rounded bg-muted" />
+            <div className="h-3 w-32 animate-pulse rounded bg-muted" />
+          </div>
+          <div className="h-3 w-full animate-pulse rounded bg-muted" />
+          <div className="h-3 w-5/6 animate-pulse rounded bg-muted" />
+          <div className="h-3 w-2/3 animate-pulse rounded bg-muted" />
+        </div>
       ))}
     </div>
   );

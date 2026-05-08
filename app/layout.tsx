@@ -1,19 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter_Tight, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const inter = Inter({
+const inter = Inter_Tight({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["500", "600", "700"],
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -23,21 +24,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0F1729",
+  themeColor: "#F7FAFA",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={cn(inter.variable, spaceGrotesk.variable)}>
+    <html lang="en" className={cn(inter.variable, instrumentSerif.variable)}>
       <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
-        <div className="mx-auto min-h-dvh max-w-md">
-          {children}
-        </div>
+        <div className="mx-auto min-h-dvh max-w-md">{children}</div>
       </body>
     </html>
   );
