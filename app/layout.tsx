@@ -20,7 +20,19 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   title: "SoundMap — Discover music worldwide",
   description: "Listen to music from around the world. Guess where it's from. Learn the story.",
-  icons: { icon: "/icon.png", apple: "/icon.png" },
+  manifest: "/manifest.webmanifest",
+  applicationName: "SoundMap",
+  appleWebApp: {
+    capable: true,
+    title: "SoundMap",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: "/icon.png",
+    apple: [{ url: "/icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: "/icon.png",
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {

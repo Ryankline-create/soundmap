@@ -4,12 +4,23 @@ The exact click sequence to record. Total: ~85 seconds. No dead clicks, no conso
 
 ## Recording setup
 
+Pick whichever recording surface you prefer:
+
+**Option A — Desktop browser (most reliable for audio):**
 1. `npm run dev` — server on `http://localhost:3000`
-2. Chrome → DevTools → toggle device toolbar (⌘⇧M)
-3. Pick **iPhone 14** (390 × 844)
-4. Refresh once after switching devices so layout settles
-5. Open `http://localhost:3000` in the device frame
-6. Optional: open a fresh Incognito window so localStorage starts empty
+2. Resize the Chrome window narrow (~400px wide). The app fills the column edge-to-edge and looks like a real phone.
+3. Open `http://localhost:3000`. Optional: Incognito window so localStorage starts empty.
+4. Use QuickTime / OBS / built-in screen recorder.
+
+**Option B — Real phone, installed as PWA (most "native app" feel):**
+1. Follow the install steps in [README.md](README.md#install-on-your-phone-pwa) so the SoundMap icon is on the home screen.
+2. Tap the icon — opens fullscreen with no browser bars.
+3. Screen-record on the phone (iOS: Control Center → Record. Android: Quick Settings → Screen Record).
+
+**Option C — Chrome DevTools mobile emulation (frame-accurate but audio sometimes blocked):**
+1. Chrome → DevTools (F12 / ⌘⌥I) → toggle device toolbar (⌘⇧M)
+2. Pick **iPhone 14** (390 × 844)
+3. Refresh once. If audio doesn't play, fall back to Option A.
 
 ## Click sequence (with timing)
 

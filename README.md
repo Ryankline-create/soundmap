@@ -37,6 +37,19 @@ ANTHROPIC_API_KEY=sk-ant-...   # in .env.local
 
 If unset, the app falls back to bundled curated content for every round — the demo flow still works end-to-end.
 
+## Install on your phone (PWA)
+
+SoundMap is installable as a Progressive Web App — taps to a home-screen icon, opens fullscreen with no browser bars, looks identical to a native app.
+
+**Same Wi-Fi as your laptop:**
+1. With `npm run dev` running, find your Mac's local IP: `ipconfig getifaddr en0`
+2. On your phone, open Safari (iOS) or Chrome (Android) → visit `http://<that-ip>:3000`
+3. **iOS:** tap Share → "Add to Home Screen" → Add. **Android:** three-dot menu → "Add to Home screen" or "Install app".
+4. Tap the SoundMap icon on your home screen — it opens fullscreen.
+
+**Anywhere on the internet:**
+Deploy the repo to any Next.js host (Vercel, Netlify, Cloudflare Pages, Render). Visit the HTTPS URL on your phone, then install via the same Add-to-Home-Screen flow.
+
 ## Demo flow
 
 1. Splash → enter name → "Start"
