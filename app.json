@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "SoundMap",
+    "slug": "soundmap",
+    "scheme": "soundmap",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "icon": "./assets/images/icon.png",
+    "backgroundColor": "#FAF5EE",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.soundmap.demo"
+    },
+    "android": {
+      "package": "app.soundmap.demo",
+      "versionCode": 1,
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "monochromeImage": "./assets/images/adaptive-icon-monochrome.png",
+        "backgroundColor": "#FAF5EE"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-audio",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#FAF5EE",
+          "dark": {
+            "image": "./assets/images/splash-icon-dark.png",
+            "backgroundColor": "#140D0A"
+          }
+        }
+      ],
+      "expo-asset"
+    ]
+  }
+}
