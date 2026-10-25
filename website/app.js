@@ -4,7 +4,7 @@
 const CONFIG = {
   expoUrl: '',
   apkUrl: '',
-  githubUrl: 'https://github.com/Brijmccsh/soundmap',
+  githubUrl: 'https://github.com/Ryankline-create/soundmap',
 };
 
 (function () {
